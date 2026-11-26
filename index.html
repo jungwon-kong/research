@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Observatory</title>
+<title>Research Observatory v2.1</title>
 <style>
 *{box-sizing:border-box}
 :root{
@@ -97,7 +97,7 @@ h1{font-size:30px}
 <main>
 <small>WORKSPACE / RESEARCH DATABASE</small>
 <div style="font-size:44px;margin-top:20px">📖</div>
-<h1>Research Observatory</h1>
+<h1>Research Observatory</h1><small>v2.1 · Research Intelligence</small>
 <p class="muted">음악, 창의성 그리고 문화예술 정책</p>
 <p id="updated" class="muted">업데이트 정보 확인 중</p>
 <div id="stats" class="stats"></div>
@@ -126,7 +126,7 @@ const save=()=>localStorage.setItem('research-prefs',JSON.stringify(prefs));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pref=r=>prefs[r.id]??={};
 const tag=r=>'<span class="tag '+colors[cats.indexOf(r.category)]+'">'+esc(r.category)+'</span>';
-const summary=r=>r.summary_ko||'한국어 요약 준비 중';
+const summary=r=>r.summary_ko||(r.summary_status||'한국어 번역 대기 중');
 function filtered(){
 return rows.filter(r=>
 (!category||r.category===category)&&
@@ -139,9 +139,9 @@ let items=filtered();
 $('stats').innerHTML=cats.map((c,i)=>'<div class="stat"><span class="tag '+colors[i]+'">'+c+'</span><strong>'+rows.filter(r=>r.category===c).length+'</strong><small>누적 자료</small></div>').join('');
 $('count').textContent='전체 '+rows.length+'건 · 검색 결과 '+items.length+'건';
 if(view==='table'){
-$('feed').innerHTML='<div class="table-wrap"><table><thead><tr><th>Title</th><th>Category</th><th>Source</th><th>수집일</th><th>Saved</th></tr></thead><tbody>'+items.map(r=>'<tr><td class="title-link" data-id="'+esc(r.id)+'">📄 '+esc(r.title)+'</td><td>'+tag(r)+'</td><td>'+esc(r.source)+'</td><td>'+esc(r.collected)+'</td><td>'+(pref(r).saved?'★':'☆')+'</td></tr>').join('')+'</tbody></table></div>';
+$('feed').innerHTML='<div class="table-wrap"><table><thead><tr><th>Title</th><th>Category</th><th>Authors</th><th>Journal / Source</th><th>Published</th><th>Collected</th><th>Saved</th></tr></thead><tbody>'+items.map(r=>'<tr><td class="title-link" data-id="'+esc(r.id)+'">📄 '+esc(r.title)+'</td><td>'+tag(r)+'</td><td>'+esc(r.authors||"미제공")+'</td><td>'+esc(r.source)+'</td><td>'+esc(r.date||"미제공")+'</td><td>'+esc(r.collected)+'</td><td>'+(pref(r).saved?'★':'☆')+'</td></tr>').join('')+'</tbody></table></div>';
 }else if(view==='gallery'){
-$('feed').innerHTML='<div class="gallery">'+items.map(r=>'<article class="article">'+tag(r)+'<h3 data-id="'+esc(r.id)+'">'+esc(r.title)+'</h3><small>'+esc(r.source)+' · '+esc(r.collected)+'</small><p>'+esc(summary(r).slice(0,350))+'</p><button data-id="'+esc(r.id)+'">자세히 보기</button></article>').join('')+'</div>';
+$('feed').innerHTML='<div class="gallery">'+items.map(r=>'<article class="article">'+tag(r)+'<h3 data-id="'+esc(r.id)+'">'+esc(r.title)+'</h3><small>'+esc(r.authors||'저자 미제공')+' · '+esc(r.source)+' · Published: '+esc(r.date||'미제공')+'</small><p>'+esc(summary(r).slice(0,350))+'</p><button data-id="'+esc(r.id)+'">자세히 보기</button></article>').join('')+'</div>';
 }else{
 let base=$('day').value||rows[0]?.collected||new Date().toISOString().slice(0,10);
 let [y,m]=base.split('-').map(Number);
@@ -154,8 +154,8 @@ document.querySelectorAll('[data-date]').forEach(e=>e.onclick=()=>{$('day').valu
 function openDetail(id){
 let r=rows.find(x=>x.id===id);if(!r)return;
 let p=pref(r);p.read=true;save();
-let url=/^https?:\/\//i.test(r.url)?r.url:'#';
-$('detail').innerHTML='<button id="close" style="float:right">닫기 ×</button><small>Research Observatory / '+esc(r.category)+'</small><h1 style="font-size:27px">'+esc(r.title)+'</h1>'+tag(r)+'<p>저자: '+esc(r.authors||'미제공')+'</p><p>출처: '+esc(r.source)+'</p><p>발행일: '+esc(r.date)+'<br>수집일: '+esc(r.collected)+'<br>'+esc(r.quartile||'')+'</p><a target="_blank" rel="noopener noreferrer" href="'+esc(url)+'">원문 보기 ↗</a><hr><h2>한국어 요약</h2><p>'+esc(summary(r))+'</p><small>원문 초록 또는 출처 제공 요약 기반</small><details><summary>원문 초록</summary><p>'+esc(r.abstract||'원문 초록 미제공')+'</p></details><hr><button id="bookmark">'+(p.saved?'★ 북마크 해제':'☆ 북마크 저장')+'</button><h2>My Research Notes</h2><textarea id="note" placeholder="개인 연구 메모"></textarea>';
+let target=r.original_url||r.url;let url=/^https?:\/\//i.test(target)?target:'#';
+$('detail').innerHTML='<button id="close" style="float:right">닫기 ×</button><small>Research Observatory / '+esc(r.category)+'</small><h1 style="font-size:27px">'+esc(r.title)+'</h1>'+tag(r)+'<p>저자: '+esc(r.authors||'미제공')+'</p><p>출처: '+esc(r.source)+'</p><p>발행일: '+esc(r.date)+'<br>수집일: '+esc(r.collected)+'<br>'+esc(r.quartile||'')+'</p><a target="_blank" rel="noopener noreferrer" href="'+esc(url)+'">원문 보기 ↗</a><hr><h2>한국어 제목</h2><p>'+esc(r.title_ko||'번역 대기 중')+'</p><h2>한국어 요약</h2><p>'+esc(summary(r))+'</p><small>'+esc(r.summary_type||'요약 유형 미확인')+' · '+esc(r.abstract_source||'출처 미확인')+'</small><details><summary>원문 초록</summary><p>'+esc(r.abstract||r.article_excerpt||'원문 정보 미제공')+'</p></details><hr><button id="bookmark">'+(p.saved?'★ 북마크 해제':'☆ 북마크 저장')+'</button><h2>My Research Notes</h2><textarea id="note" placeholder="개인 연구 메모"></textarea>';
 $('note').value=p.note||'';
 $('note').oninput=()=>{p.note=$('note').value;save()};
 $('bookmark').onclick=()=>{p.saved=!p.saved;save();$('bookmark').textContent=p.saved?'★ 북마크 해제':'☆ 북마크 저장';render()};
@@ -174,7 +174,7 @@ $('q').oninput=render;$('day').onchange=render;
 document.body.classList.toggle('dark',localStorage.getItem('ro-theme')==='dark');
 $('theme').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('ro-theme',document.body.classList.contains('dark')?'dark':'light')};
 $('export').onclick=()=>{
-let keys=['category','title','authors','source','date','collected','url','quartile','summary_ko','abstract'];
+let keys=['category','title','authors','source','date','collected','url','quartile','title_ko','summary_ko','summary_status','abstract_source','abstract'];
 let csv=[keys.join(','),...filtered().map(r=>keys.map(k=>'"'+String(r[k]||'').replaceAll('"','""')+'"').join(','))].join('\n');
 let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv'}));a.download='research.csv';a.click();URL.revokeObjectURL(a.href);
 };

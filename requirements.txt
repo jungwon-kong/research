@@ -1,4 +1,8 @@
 transformers>=4.45,<5
 sentencepiece
-sacremoses
+protobuf
 torch
+requests
+beautifulsoup4
+trafilatura
+googlenewsdecoder
