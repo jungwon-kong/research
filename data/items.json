@@ -81,7 +81,9 @@
     "authors": "",
     "quartile": "",
     "id": "5fab76d0b4461f55ad0a8786fdc9e393891cd2454f682481915aebe0f3688310",
-    "collected": "2026-11-26"
+    "collected": "2026-11-26",
+    "summary_ko": "문체부·예술위 23일부터 청년문화예술패스 선착순 추가 발급 - 연합뉴스\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
   },
   {
     "category": "국내 문화예술 정책",
@@ -93,7 +95,9 @@
     "authors": "",
     "quartile": "",
     "id": "fca5028d43af0dded922a13d8211f84da0c3e560b56b359a874c8c7ea0b62f33",
-    "collected": "2026-11-26"
+    "collected": "2026-11-26",
+    "summary_ko": "공연에, 전시, 영화, 책까지! 청년문화예술패스 꼭 사용하세요 - 대한민국 정책브리핑\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
   },
   {
     "category": "국내 문화예술 정책",
@@ -105,7 +109,9 @@
     "authors": "",
     "quartile": "",
     "id": "9792582ee71563888e630b612a69bd7984e7ffeb737227153c1e4f2cb9d587e3",
-    "collected": "2026-11-26"
+    "collected": "2026-11-26",
+    "summary_ko": "[사설] 문화예술 예산, 삭감부터 해야 하나 - 경기신문\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
   },
   {
     "category": "해외 문화예술 정책",
@@ -141,6 +147,120 @@
     "authors": "",
     "quartile": "",
     "id": "65175da5f7ebcc94ba1972c7576e64d0f20c41d97e3159d23fd62d2b1796161b",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "음악 연구",
+    "title": "Electronic Elements Mitigate AI Composer Bias in Traditional Chinese Folk Music",
+    "url": "https://doi.org/10.1177/03057356261499287",
+    "source": "Psychology of Music",
+    "authors": "Peng Qian, Minqi Lyu, Jianping Huang",
+    "date": "2026-11-16",
+    "abstract": " \n                    Artificial intelligence (AI) is increasingly expanding into creative domains; however, audiences often devalue music labeled as AI-composed, a phenomenon known as AI composer bias. This bias can be understood as a mismatch between the low experiential capacity attributed to AI’s mind and the high emotional demands of art. This study examines whether such AI composer bias manifests in traditional Chinese folk music, where\n                     yijing \n                    (emotional depth and spiritual atmosphere) is central, and tests whether incorporating electronic elements can mitigate it. Using a 2 (music type: traditional folk vs. electronic folk) × 2 (label type: human vs. AI) between-subjects design (\n                     N \n                     = 174), we found a strong AI composer bias for traditional Chinese folk music, which disappeared when electronic elements were introduced. The results suggest that electronic elements act as bottom-up cues that enhance schema congruency between acoustic features and the AI composer label. The study not only extends bias research to a non-Western context but also proposes a practical, production-based strategy to mitigate bias, offering implications for the acceptance of AI within culturally significant genres.\n                   ",
+    "quartile": "Q1 미검증",
+    "id": "00d1ce9a7d0bbbdeb03226550427affe1fde82a68be1ca82b5ddabde97e9783a",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "음악 연구",
+    "title": "Coping and Resilience Among Conservatoire Music Students in the United Kingdom: A Survey Study",
+    "url": "https://doi.org/10.1177/03057356261496430",
+    "source": "Psychology of Music",
+    "authors": "Frederick Lam, Aaron Williamon",
+    "date": "2026-11-19",
+    "abstract": " Musicians face distinct psychological and physical pressures associated with intensive training and professional uncertainty, making coping and resilience key areas of concern for their wellbeing. This study examined how coping strategies and psychological resilience contribute to the health and wellbeing of conservatoire music students in the United Kingdom. One hundred and twenty undergraduate and postgraduate music students from seven U.K. conservatoires completed an online survey measuring coping (selected subscales from the COPE Inventory), psychological resilience (10-item Connor-Davidson Resilience Scale), general health (36-item Short-Form Health Survey) and wellbeing (Short Warwick-Edinburgh Mental Wellbeing Scale). Conservatoire music students scored positive reinterpretation and growth as the highest-scoring coping strategy. Resilience scores were lower than comparable population norms; however, interpretation should consider contextual differences between conservatoire training environments and broader adult samples. Coping and resilience were positively correlated; particularly, positive reinterpretation and growth and active coping showed strong correlations with resilience. Furthermore, coping and resilience were positively correlated with wellbeing, whereas health also showed positive associations with resilience and wellbeing. These findings highlight the interconnected roles of coping and resilience in supporting conservatoire music students’ health and wellbeing. Further research is needed to examine factors that influence coping and resilience throughout musicians’ training and inform the development of effective health and wellbeing support systems. ",
+    "quartile": "Q1 미검증",
+    "id": "df34ce59547191082f942b5884876d5b390898a4c340e0e4a2e55e7f7ea87be0",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "음악 연구",
+    "title": "Supplemental Material for Does Foreign Music Sound Scary? Evidence From Western Listeners",
+    "url": "https://doi.org/10.1037/aca0000906.supp",
+    "source": "Psychology of Aesthetics, Creativity, and the Arts",
+    "authors": "",
+    "date": "2026-11-19",
+    "abstract": "",
+    "quartile": "Q1 미검증",
+    "id": "d50946b779293c524ee028552afa60a20f55e2e548848401001ca245e6fb61c0",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "국내 문화예술 정책",
+    "title": "\"문화예술 예산 늘었다는데 국악 몫은 얼마\"…142개 단체 공개 요구 - 한국경제",
+    "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFAwVFZLX2JzeDM2c1l6VDA2T0JJR0ZzenpVSTd6ZjVRU0x0eFpvcjMxemVZUTBPQXVmSEprUzRDVnlmRjVnS3JaWjQyeTQxVFhQQWUyUjg2aVV6UQ?oc=5",
+    "source": "한국경제",
+    "date": "Fri, 20 Nov 2026 04:20:27 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "ea8c174e3c0e4df835158eb2bf17f6afd74cf7eb0c1e71e81b3f674c6faecf83",
+    "collected": "2026-11-26",
+    "summary_ko": "\"문화예술 예산 늘었다는데 국악 몫은 얼마\"…142개 단체 공개 요구 - 한국경제\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
+  },
+  {
+    "category": "국내 문화예술 정책",
+    "title": "한국문화예술위원회 '2026 올해의 SNS' 블로그, 인스타그램 부문 공공기관 대상 2관왕 - 매일일보",
+    "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBPaDZsZmNiSTZkUGlRa09NN0NtdWl3b3VNNTBMamZ0bjk3MXFHaUZYeDdmenVfZnFZMUptT2ZEazV6Y0E1cDh6b18tS0VRSXgxTVJMQzlURDJURTNNeEFaTko0M2E?oc=5",
+    "source": "매일일보",
+    "date": "Tue, 24 Nov 2026 00:45:37 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "1e5610c3e6aaeed8de4740b213d96ecd19b88c9eedc258cec6d8082bd8fdfd34",
+    "collected": "2026-11-26",
+    "summary_ko": "한국문화예술위원회 '2026 올해의 SNS' 블로그, 인스타그램 부문 공공기관 대상 2관왕 - 매일일보\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
+  },
+  {
+    "category": "국내 문화예술 정책",
+    "title": "청와대 메시지 맡아온 강유정, 문화예술 정책 수장 도전 : 정치 - 재경일보",
+    "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9JLW1PWnh3bTd2RXF3ejVJa2l3eF83TUdPVHF0LUlWT2RXTC03Znl6NGpXaUR0Q0lUaXU1QnYzZGZEUHVEcjhrV3o3SQ?oc=5",
+    "source": "재경일보",
+    "date": "Mon, 23 Nov 2026 07:56:29 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "a16fd6c0a31cfd9cca5dd77576edea05c1a090b654885087ff321fbcd54a0f1e",
+    "collected": "2026-11-26",
+    "summary_ko": "청와대 메시지 맡아온 강유정, 문화예술 정책 수장 도전 : 정치 - 재경일보\n\n원문 초록 또는 기사 본문이 제공되지 않아 상세 요약은 생략합니다.",
+    "summary_type": "제목 번역"
+  },
+  {
+    "category": "해외 문화예술 정책",
+    "title": "UKRI Announces 49 Million Pounds in Research and Innovation Funding for UK Creative Industries - CASRAI",
+    "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOTVFhek5rS2lfSHJDdW55Z0d0T2hjZnFsVjBXMWVIeS1jcG5heXYyM2ZBaHFCMjlnS0dCdTlReDZXRU9KVXBtdTJRUklXSjhTMDI2QWZxbENEd2VCMkljbWRNcDkwWUZiU1BTcnJxOGJVZjRBMXFDVWE0OGpWRW4tcnF3ajFyMXZCQXd2WGMtcUJCNlJ3SkZCeTBPaw?oc=5",
+    "source": "CASRAI",
+    "date": "Wed, 25 Nov 2026 15:42:41 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "df92590ff4de632d5b0539818d8def9bc5160f87ede0ba135e4c0cc6f6fd4a6f",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "해외 문화예술 정책",
+    "title": "The Creative Economy: Armenia’s Next Big Opportunity - CIVILNET",
+    "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBRYnFlUVRSTll6MWlFd1VwYWxpS2dKV1Bta0ItSlItSERibTctSkhkd1VoNkg2T2kyZjRaeC1XZ0NsamhSazRJOXROYw?oc=5",
+    "source": "CIVILNET",
+    "date": "Mon, 23 Nov 2026 16:05:00 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "54c3bd6623e9d7f73b9692e6d33c12ca4e86e7c59598b68e3dca9807e5ae2dff",
+    "collected": "2026-11-26"
+  },
+  {
+    "category": "해외 문화예술 정책",
+    "title": "united artists for climate calls for art and culture to take stronger role in climate action at COP31 - Designboom",
+    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQaUJHS2RTYkdzSDk3ajFCby1YMkZlV3VTSVo0TmcyQjdlUlRlZUw5SzkyU3Z2TTFNQWUwbUU5dWh5YURIcGlFYnpTbldHYnJVdkF4a3A5eDFTSllNa1A2TElCMHRoVks3OTk2MVNNZzFQaWQyT0t1R0tDWGtnQ1dwUUNkWkVwTjBEeDloOERNX1R3RkV5QmphS1oySlZYalVITm5IOVRzZDlnQnM0dFhKNzY4Tmh6QQ?oc=5",
+    "source": "Designboom",
+    "date": "Thu, 19 Nov 2026 11:52:22 GMT",
+    "abstract": "",
+    "authors": "",
+    "quartile": "",
+    "id": "bce415e05d15cfdc50c7f584a8f8e153e460b5a3325638b059a9e0ffa1d7fd03",
     "collected": "2026-11-26"
   }
 ]
