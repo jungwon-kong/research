@@ -1,2 +1,191 @@
-<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Research Observatory</title><style>body{font:16px system-ui,sans-serif;background:#f5f6f8;color:#182333;max-width:1000px;margin:auto;padding:24px}header{margin:30px 0}small{color:#657080}button,input,select,textarea{font:inherit;padding:10px;border:1px solid #ccd3dc;border-radius:8px;background:white}nav{display:flex;gap:8px;flex-wrap:wrap}article{background:white;padding:20px;margin:12px 0;border-radius:12px;border:1px solid #e0e4ea}a{color:#245b96}textarea{width:95%}button{cursor:pointer}h2{font-size:20px}#stats{margin:20px 0}</style><header><small>PERSONAL RESEARCH INTELLIGENCE</small><h1>Research Observatory</h1><p>음악 · 창의성 · 문화예술 정책</p></header><nav><input id="q" placeholder="제목, 저자, 키워드 검색"><select id="cat"><option value="">전체 분야</option><option>음악 연구</option><option>창의성 연구</option><option>국내 문화예술 정책</option><option>해외 문화예술 정책</option></select><select id="mode"><option value="">전체 자료</option><option value="saved">북마크</option><option value="unread">읽지 않음</option></select><input type="date" id="day"><button id="export">CSV 내보내기</button></nav><p id="stats">불러오는 중</p><main id="feed"></main><script>
-const $=id=>document.getElementById(id);let rows=[],prefs=JSON.parse(localStorage.getItem('research-prefs')||'{}');const save=()=>localStorage.setItem('research-prefs',JSON.stringify(prefs));function filtered(){return rows.filter(r=>(!$('cat').value||r.category===$('cat').value)&&(!$('day').value||r.collected===$('day').value)&&JSON.stringify(r).toLowerCase().includes($('q').value.toLowerCase())&&(!$('mode').value||($('mode').value==='saved'?prefs[r.id]?.saved:!prefs[r.id]?.read)))}function render(){let items=filtered();$('stats').textContent=`전체 ${rows.length}건 · 검색 결과 ${items.length}건`; $('feed').replaceChildren();for(const r of items){let a=document.createElement('article'),p=prefs[r.id]??={};const add=(tag,t)=>{let e=document.createElement(tag);e.textContent=t;a.append(e);return e};add('small',`${r.category} · ${r.date||''} · ${r.source||''} · ${r.quartile||''}`);add('h2',r.title);add('p',r.authors||'');add('p',r.abstract||'초록 미제공');let link=add('a','원문 보기');if(/^https?:\/\//i.test(r.url))link.href=r.url;link.target='_blank';link.rel='noopener noreferrer';a.append(document.createElement('hr'));for(const [key,label] of [['saved','북마크'],['read','읽음']]){let b=add('button',`${p[key]?'✓ ':''}${label}`);b.onclick=()=>{p[key]=!p[key];save();render()}}let note=add('textarea','');note.placeholder='개인 메모 (현재 브라우저에만 저장)';note.value=p.note||'';note.oninput=()=>{p.note=note.value;save()};$('feed').append(a)}if(!items.length)$('feed').textContent='자료가 없습니다. 자동 수집을 실행하거나 필터를 변경하세요.'}for(const id of ['q','cat','mode','day'])$(id).oninput=render;$('export').onclick=()=>{let keys=['category','title','authors','date','source','url','quartile','abstract'];let csv=[keys.join(','),...filtered().map(r=>keys.map(k=>'"'+String(r[k]||'').replaceAll('"','""')+'"').join(','))].join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv'}));a.download='research.csv';a.click()};fetch('data/items.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(r=>{rows=r;render()}).catch(()=>$('stats').textContent='데이터를 불러오지 못했습니다.');</script></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Observatory</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#fff;--side:#f7f7f5;--text:#37352f;
+ --muted:#858580;--line:#e9e9e7;--hover:#efefed;
+}
+body{margin:0;background:var(--bg);color:var(--text);
+font:14px/1.65 -apple-system,BlinkMacSystemFont,"Pretendard",
+"Apple SD Gothic Neo",sans-serif}
+aside{position:fixed;inset:0 auto 0 0;width:235px;
+background:var(--side);padding:24px 14px;overflow:auto}
+.brand{font-size:16px;font-weight:700;padding:8px}
+.label{font-size:11px;color:var(--muted);margin:25px 8px 8px}
+.menu{display:block;width:100%;border:0;background:transparent;
+text-align:left;padding:9px;border-radius:5px;color:inherit}
+.menu:hover,.menu.active{background:var(--hover)}
+main{margin-left:235px;padding:55px 5%;max-width:1600px}
+h1{font-size:38px;letter-spacing:-1.5px;margin:12px 0}
+h2{font-size:23px;margin-top:32px}
+small,.muted{color:var(--muted)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);
+background:var(--bg);padding:7px 12px;border-radius:5px}
+button:hover{background:var(--hover)}
+input,select,textarea{border:1px solid var(--line);
+border-radius:5px;padding:8px;background:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);
+gap:12px;margin:26px 0}
+.stat{border:1px solid var(--line);border-radius:8px;padding:18px}
+.stat strong{display:block;font-size:30px;margin-top:8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.views{display:flex;gap:6px;border-bottom:1px solid var(--line);
+padding-bottom:10px}
+.views button.active{background:var(--hover);font-weight:600}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;text-align:left}
+th{font-size:12px;color:var(--muted);font-weight:500}
+th,td{border-bottom:1px solid var(--line);padding:13px 10px}
+tbody tr:hover{background:var(--side)}
+.title-link{cursor:pointer;font-weight:600}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;
+font-size:12px;white-space:nowrap}
+.music{background:#e1ecf8;color:#345b83}
+.creative{background:#eee4f6;color:#72508b}
+.korea{background:#dceee4;color:#356b50}
+.global{background:#faecd7;color:#936b35}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:15px}
+.article{border:1px solid var(--line);border-radius:8px;padding:20px}
+.article h3{font-size:17px;cursor:pointer}
+.article p{white-space:pre-wrap}
+dialog{border:1px solid var(--line);border-radius:10px;
+background:var(--bg);color:var(--text);width:min(800px,94vw);
+max-height:90vh;padding:30px}
+dialog::backdrop{background:#0005}
+dialog textarea{width:100%;min-height:110px}
+dialog p{white-space:pre-wrap}
+a{color:inherit;text-underline-offset:4px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr)}
+.cell{min-height:85px;border:1px solid var(--line);padding:8px}
+.cell button{width:100%;font-size:12px;padding:3px}
+.dark{--bg:#191919;--side:#202020;--text:#e8e8e8;
+--muted:#a0a0a0;--line:#393939;--hover:#303030}
+@media(max-width:800px){
+aside{position:static;width:100%;padding:12px}
+aside .label{display:none}
+aside .menu{display:inline-block;width:auto;font-size:12px}
+main{margin:0;padding:25px 16px}
+.stats{grid-template-columns:repeat(2,1fr)}
+h1{font-size:30px}
+}
+</style>
+</head>
+<body>
+<aside>
+<div class="brand">📚 Research Observatory</div>
+<div class="label">WORKSPACE</div>
+<button class="menu active" data-cat="">⌂ 전체 연구</button>
+<button class="menu" id="today">◷ 최근 브리핑</button>
+<button class="menu" id="saved">☆ 북마크</button>
+<button class="menu" id="unread">○ 읽지 않은 자료</button>
+<div class="label">CATEGORIES</div>
+<button class="menu" data-cat="음악 연구">♫ 음악 연구</button>
+<button class="menu" data-cat="창의성 연구">✧ 창의성 연구</button>
+<button class="menu" data-cat="국내 문화예술 정책">▣ 국내 문화예술 정책</button>
+<button class="menu" data-cat="해외 문화예술 정책">◎ 해외 문화예술 정책</button>
+<div class="label">SETTINGS</div>
+<button class="menu" id="theme">◐ 다크 모드</button>
+<button class="menu" id="export">↓ CSV 내보내기</button>
+</aside>
+<main>
+<small>WORKSPACE / RESEARCH DATABASE</small>
+<div style="font-size:44px;margin-top:20px">📖</div>
+<h1>Research Observatory</h1>
+<p class="muted">음악, 창의성 그리고 문화예술 정책</p>
+<p id="updated" class="muted">업데이트 정보 확인 중</p>
+<div id="stats" class="stats"></div>
+<h2>Research Database</h2>
+<div class="views">
+<button data-view="table" class="active">▤ Table</button>
+<button data-view="gallery">▦ Gallery</button>
+<button data-view="calendar">▧ Calendar</button>
+</div>
+<div class="toolbar">
+<input type="search" id="q" placeholder="논문, 저자, 키워드 검색">
+<input type="date" id="day">
+<button id="reset">필터 초기화</button>
+</div>
+<p id="count" class="muted"></p>
+<div id="feed"></div>
+</main>
+<dialog id="detail"></dialog>
+<script>
+const $=id=>document.getElementById(id);
+const cats=['음악 연구','창의성 연구','국내 문화예술 정책','해외 문화예술 정책'];
+const colors=['music','creative','korea','global'];
+let rows=[],category='',mode='',view='table';
+let prefs=JSON.parse(localStorage.getItem('research-prefs')||'{}');
+const save=()=>localStorage.setItem('research-prefs',JSON.stringify(prefs));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pref=r=>prefs[r.id]??={};
+const tag=r=>'<span class="tag '+colors[cats.indexOf(r.category)]+'">'+esc(r.category)+'</span>';
+const summary=r=>r.summary_ko||'한국어 요약 준비 중';
+function filtered(){
+return rows.filter(r=>
+(!category||r.category===category)&&
+(!$('day').value||r.collected===$('day').value)&&
+JSON.stringify(r).toLowerCase().includes($('q').value.toLowerCase())&&
+(!mode||(mode==='saved'?pref(r).saved:!pref(r).read)));
+}
+function render(){
+let items=filtered();
+$('stats').innerHTML=cats.map((c,i)=>'<div class="stat"><span class="tag '+colors[i]+'">'+c+'</span><strong>'+rows.filter(r=>r.category===c).length+'</strong><small>누적 자료</small></div>').join('');
+$('count').textContent='전체 '+rows.length+'건 · 검색 결과 '+items.length+'건';
+if(view==='table'){
+$('feed').innerHTML='<div class="table-wrap"><table><thead><tr><th>Title</th><th>Category</th><th>Source</th><th>수집일</th><th>Saved</th></tr></thead><tbody>'+items.map(r=>'<tr><td class="title-link" data-id="'+esc(r.id)+'">📄 '+esc(r.title)+'</td><td>'+tag(r)+'</td><td>'+esc(r.source)+'</td><td>'+esc(r.collected)+'</td><td>'+(pref(r).saved?'★':'☆')+'</td></tr>').join('')+'</tbody></table></div>';
+}else if(view==='gallery'){
+$('feed').innerHTML='<div class="gallery">'+items.map(r=>'<article class="article">'+tag(r)+'<h3 data-id="'+esc(r.id)+'">'+esc(r.title)+'</h3><small>'+esc(r.source)+' · '+esc(r.collected)+'</small><p>'+esc(summary(r).slice(0,350))+'</p><button data-id="'+esc(r.id)+'">자세히 보기</button></article>').join('')+'</div>';
+}else{
+let base=$('day').value||rows[0]?.collected||new Date().toISOString().slice(0,10);
+let [y,m]=base.split('-').map(Number);
+let days=new Date(y,m,0).getDate(),start=new Date(y,m-1,1).getDay();
+$('feed').innerHTML='<h3>'+y+'년 '+m+'월</h3><div class="calendar">'+['일','월','화','수','목','금','토'].map(d=>'<div class="cell" style="min-height:30px">'+d+'</div>').join('')+'<div class="cell"></div>'.repeat(start)+Array.from({length:days},(_,i)=>{let d=y+'-'+String(m).padStart(2,'0')+'-'+String(i+1).padStart(2,'0');let n=rows.filter(r=>r.collected===d).length;return '<div class="cell">'+(i+1)+(n?'<button data-date="'+d+'">'+n+'건</button>':'')+'</div>'}).join('')+'</div>';
+}
+document.querySelectorAll('[data-id]').forEach(e=>e.onclick=()=>openDetail(e.dataset.id));
+document.querySelectorAll('[data-date]').forEach(e=>e.onclick=()=>{$('day').value=e.dataset.date;setView('table')});
+}
+function openDetail(id){
+let r=rows.find(x=>x.id===id);if(!r)return;
+let p=pref(r);p.read=true;save();
+let url=/^https?:\/\//i.test(r.url)?r.url:'#';
+$('detail').innerHTML='<button id="close" style="float:right">닫기 ×</button><small>Research Observatory / '+esc(r.category)+'</small><h1 style="font-size:27px">'+esc(r.title)+'</h1>'+tag(r)+'<p>저자: '+esc(r.authors||'미제공')+'</p><p>출처: '+esc(r.source)+'</p><p>발행일: '+esc(r.date)+'<br>수집일: '+esc(r.collected)+'<br>'+esc(r.quartile||'')+'</p><a target="_blank" rel="noopener noreferrer" href="'+esc(url)+'">원문 보기 ↗</a><hr><h2>한국어 요약</h2><p>'+esc(summary(r))+'</p><small>원문 초록 또는 출처 제공 요약 기반</small><details><summary>원문 초록</summary><p>'+esc(r.abstract||'원문 초록 미제공')+'</p></details><hr><button id="bookmark">'+(p.saved?'★ 북마크 해제':'☆ 북마크 저장')+'</button><h2>My Research Notes</h2><textarea id="note" placeholder="개인 연구 메모"></textarea>';
+$('note').value=p.note||'';
+$('note').oninput=()=>{p.note=$('note').value;save()};
+$('bookmark').onclick=()=>{p.saved=!p.saved;save();$('bookmark').textContent=p.saved?'★ 북마크 해제':'☆ 북마크 저장';render()};
+$('close').onclick=()=>$('detail').close();
+if(!$('detail').open)$('detail').showModal();
+render();
+}
+function setView(v){view=v;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));render()}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{category=b.dataset.cat;mode='';$('day').value='';render()});
+$('today').onclick=()=>{category='';mode='';$('day').value=rows[0]?.collected||'';setView('gallery')};
+$('saved').onclick=()=>{mode='saved';category='';$('day').value='';render()};
+$('unread').onclick=()=>{mode='unread';category='';$('day').value='';render()};
+$('reset').onclick=()=>{category='';mode='';$('q').value='';$('day').value='';render()};
+$('q').oninput=render;$('day').onchange=render;
+document.body.classList.toggle('dark',localStorage.getItem('ro-theme')==='dark');
+$('theme').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('ro-theme',document.body.classList.contains('dark')?'dark':'light')};
+$('export').onclick=()=>{
+let keys=['category','title','authors','source','date','collected','url','quartile','summary_ko','abstract'];
+let csv=[keys.join(','),...filtered().map(r=>keys.map(k=>'"'+String(r[k]||'').replaceAll('"','""')+'"').join(','))].join('\n');
+let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv'}));a.download='research.csv';a.click();URL.revokeObjectURL(a.href);
+};
+fetch('data/items.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{
+rows=data.sort((a,b)=>String(b.collected).localeCompare(String(a.collected)));
+$('updated').textContent='최근 자료 수집일: '+(rows[0]?.collected||'기록 없음');
+render();
+}).catch(()=>$('updated').textContent='데이터를 불러오지 못했습니다.');
+fetch('data/status.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(s=>{
+if(s.updated_at)$('updated').textContent='마지막 데이터 처리: '+s.updated_at+' (KST)';
+}).catch(()=>{});
+</script>
+</body>
+</html>

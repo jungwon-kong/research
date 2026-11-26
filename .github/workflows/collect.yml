@@ -1,23 +1,40 @@
 name: Collect research
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+
 permissions:
   contents: write
+
 concurrency:
   group: research-collection
+
 jobs:
   collect:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python collect.py
-      - run: |
+
+      - name: Collect research
+        run: python collect.py
+
+      - name: Install translation model dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate Korean summaries
+        run: python summarize.py
+
+      - name: Save research database
+        run: |
           git config user.name 'research-bot'
           git config user.email 'research-bot@users.noreply.github.com'
-          git add data/items.json
-          git diff --cached --quiet || (git commit -m 'Update research database' && git push)
+          git add data/
+          git diff --cached --quiet || (git commit -m 'Update research database and Korean summaries' && git push)
